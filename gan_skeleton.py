@@ -40,7 +40,7 @@ elif DATASET == "mnist_f":
     CLASSLIST = ["top", "trouser", "pullover", "dress", "coat",
                  "sandal", "shirt", "sneaker", "bag", "ankle boot"]
     # TODO: choose a label to train on from the CLASSLIST above
-    LABEL = "coat"
+    LABEL = "sneaker"
 
 elif DATASET == "cifar_10":
     IMAGE_SHAPE = (IH, IW, IZ) = (32, 32, 3)
@@ -66,6 +66,8 @@ def plotLoss(genLoss, advLoss):
     x = np.arange(len(genLoss))
     plt.plot(x, np.array(genLoss), label='generator loss')
     plt.plot(x, np.array(advLoss), label='adverserial loss')
+    plt.xlabel("Loss")
+    plt.ylabel("Epochs")
     plt.legend()
     plt.show()
 
@@ -250,7 +252,7 @@ def runGAN(generator, outfile):
     im = Image.fromarray(img)                       # store resulting image
     im = im.convert("RGB")
     im.save(outfile)
-    # display(im)
+    display(im)
 
 
 ################################### RUNNING THE PIPELINE #############################
