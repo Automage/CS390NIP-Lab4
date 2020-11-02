@@ -27,8 +27,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # NOTE: mnist_d is no credit
 # NOTE: cifar_10 is extra credit
-DATASET = "mnist_d"
-# DATASET = "mnist_f"
+# DATASET = "mnist_d"
+DATASET = "mnist_f"
 #DATASET = "cifar_10"
 
 if DATASET == "mnist_d":
@@ -63,9 +63,11 @@ VERBOSE_OUTPUT = False
 
 
 def plotLoss(genLoss, advLoss):
-    x = np.linspace(1, len(genLoss))
+    x = np.arange(len(genLoss))
     plt.plot(x, np.array(genLoss), label='generator loss')
     plt.plot(x, np.array(advLoss), label='adverserial loss')
+    plt.legend()
+    plt.show()
 
 
 ################################### DATA FUNCTIONS ###################################
@@ -217,6 +219,10 @@ def buildGAN(images, epochs=40000, batchSize=32, loggingInterval=0):
         genLossData.append(genLoss)
         advLossData.append(advLoss[0])
 
+        print(".", end=" ")
+        if epoch % 50 == 0:
+            print()
+
         # Logging
         if loggingInterval > 0 and epoch % loggingInterval == 0:
             print("\tEpoch %d:" % epoch)
@@ -244,6 +250,7 @@ def runGAN(generator, outfile):
     im = Image.fromarray(img)                       # store resulting image
     im = im.convert("RGB")
     im.save(outfile)
+    # display(im)
 
 
 ################################### RUNNING THE PIPELINE #############################
@@ -258,7 +265,7 @@ def main():
     # Filter for just the class we are trying to generate
     data = preprocessData(raw)
     # Create and train all facets of the GAN
-    (generator, adv, gan) = buildGAN(data, epochs=2000, loggingInterval=1000)
+    (generator, adv, gan) = buildGAN(data, epochs=2000, loggingInterval=500)
     # Utilize our spooky neural net gimmicks to create realistic counterfeit images
     for i in range(10):
         runGAN(generator, OUTPUT_DIR + "/" + OUTPUT_NAME + "_final_%d.png" % i)
