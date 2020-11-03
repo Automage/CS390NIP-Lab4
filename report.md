@@ -10,6 +10,7 @@ https://www.tensorflow.org/tutorials/generative/dcgan
 ## Completed
 - Complete the GAN to generate legible F-MNIST records. Generate from 3 classes.
 - Use a convnet for the GAN networks.
+- Implement the option to select the ratio of training between discriminator and generator. (I chose to use 2 ratio hyperparameters between [0.0, 1.0], one for the generator and the other for the discriminator)
 - Save a plot of loss over training steps for each network.
 
 ## Questions
@@ -40,6 +41,9 @@ adversarial training ratio = 1.0
 ### F_MINST Sneaker
 ![coat_plot](plots/sneaker_plot.png)
 
+### F_MINST Trouser
+![coat_plot](plots/trouser_plot.png)
+
 ## Images
 
 ### F_MINST Coat
@@ -55,3 +59,10 @@ adversarial training ratio = 1.0
 ![coat_plot](outputs/mnist_f_sneaker/mnist_f_sneaker_final_7.png)
 ![coat_plot](outputs/mnist_f_sneaker/mnist_f_sneaker_final_6.png)
 ![coat_plot](outputs/mnist_f_sneaker/mnist_f_sneaker_final_5.png)
+
+### F_MINST Trouser
+![coat_plot](outputs/mnist_f_trouser/mnist_f_trouser_final_9.png)
+![coat_plot](outputs/mnist_f_trouser/mnist_f_trouser_final_8.png)
+![coat_plot](outputs/mnist_f_trouser/mnist_f_trouser_final_7.png)
+![coat_plot](outputs/mnist_f_trouser/mnist_f_trouser_final_6.png)
+![coat_plot](outputs/mnist_f_trouser/mnist_f_trouser_final_5.png)
