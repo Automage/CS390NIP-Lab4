@@ -1,3 +1,5 @@
+**Note:** I have completed the detailed F-MINST extra credit portion, however it is not stated on my report. I have updated this README.md to state this.
+
 Pranav Nair
 
 nair51@purdue.edu
@@ -12,6 +14,7 @@ https://www.tensorflow.org/tutorials/generative/dcgan
 - Use a convnet for the GAN networks.
 - Implement the option to select the ratio of training between discriminator and generator. (I chose to use 2 ratio hyperparameters between [0.0, 1.0], one for the generator and the other for the discriminator)
 - Save a plot of loss over training steps for each network.
+- EC: Generate very detailed F-MNIST records (there is no metric for this, just do your best). (I have included a run on F-MINST coat images using 10000 epochs)
 
 ## Questions
 ### Describe the discriminator and generator.
