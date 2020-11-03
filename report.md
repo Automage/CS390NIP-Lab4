@@ -27,6 +27,10 @@ optimizer = Adam
 
 adversarial loss function = binary cross entropy
 
+generator training ratio = 1.0
+
+adversarial training ratio = 1.0
+
 
 ## Plots
 
@@ -34,6 +38,7 @@ adversarial loss function = binary cross entropy
 ![coat_plot](plots/coat_plot.png)
 
 ### F_MINST Sneaker
+![coat_plot](plots/sneaker_plot.png)
 
 ## Images
 
@@ -43,3 +48,10 @@ adversarial loss function = binary cross entropy
 ![coat_plot](outputs/mnist_f_coat/mnist_f_coat_final_7.png)
 ![coat_plot](outputs/mnist_f_coat/mnist_f_coat_final_6.png)
 ![coat_plot](outputs/mnist_f_coat/mnist_f_coat_final_5.png)
+
+### F_MINST Sneaker
+![coat_plot](outputs/mnist_f_sneaker/mnist_f_sneaker_final_9.png)
+![coat_plot](outputs/mnist_f_sneaker/mnist_f_sneaker_final_8.png)
+![coat_plot](outputs/mnist_f_sneaker/mnist_f_sneaker_final_7.png)
+![coat_plot](outputs/mnist_f_sneaker/mnist_f_sneaker_final_6.png)
+![coat_plot](outputs/mnist_f_sneaker/mnist_f_sneaker_final_5.png)

@@ -66,8 +66,8 @@ def plotLoss(genLoss, advLoss):
     x = np.arange(len(genLoss))
     plt.plot(x, np.array(genLoss), label='generator loss')
     plt.plot(x, np.array(advLoss), label='adverserial loss')
-    plt.xlabel("Loss")
-    plt.ylabel("Epochs")
+    plt.ylabel("Loss")
+    plt.xlabel("Epochs")
     plt.legend()
     plt.show()
 
@@ -177,7 +177,7 @@ def buildGenerator():
     return Model(inputTensor, model(inputTensor))
 
 
-def buildGAN(images, epochs=40000, batchSize=32, loggingInterval=0):
+def buildGAN(images, epochs=40000, batchSize=32, loggingInterval=0, gen_ratio=1.0, adv_ratio=1.0):
     # Plot data
     genLossData = []
     advLossData = []
@@ -203,23 +203,42 @@ def buildGAN(images, epochs=40000, batchSize=32, loggingInterval=0):
     # Training
     trueCol = np.ones((batchSize, 1))
     falseCol = np.zeros((batchSize, 1))
+
+    genLoss = 0.0
+    advLossTemp = 0.0
+    advAccTemp = 0.0
+
     for epoch in range(epochs):
 
+        # Randomness for ratio training
+        rand_ratio = random.random()
+        doGenTrain = False
+        doAdvTrain = False
+        if gen_ratio - rand_ratio >= 0:
+            doGenTrain = True
+
+        if adv_ratio - rand_ratio >= 0:
+            doAdvTrain = True
+
         # Train discriminator with a true and false batch
-        batch = images[np.random.randint(0, images.shape[0], batchSize)]
-        noise = np.random.normal(0, 1, (batchSize, NOISE_SIZE))
-        genImages = generator.predict(noise)
-        advTrueLoss = adversary.train_on_batch(batch, trueCol)
-        advFalseLoss = adversary.train_on_batch(genImages, falseCol)
-        advLoss = np.add(advTrueLoss, advFalseLoss) * 0.5
+        if doAdvTrain:
+            batch = images[np.random.randint(0, images.shape[0], batchSize)]
+            noise = np.random.normal(0, 1, (batchSize, NOISE_SIZE))
+            genImages = generator.predict(noise)
+            advTrueLoss = adversary.train_on_batch(batch, trueCol)
+            advFalseLoss = adversary.train_on_batch(genImages, falseCol)
+            advLoss = np.add(advTrueLoss, advFalseLoss) * 0.5
+            advLossTemp = advLoss[0]
+            advAccTemp = advLoss[1]
 
         # Train generator by training GAN while keeping adversary component constant
-        noise = np.random.normal(0, 1, (batchSize, NOISE_SIZE))
-        genLoss = gan.train_on_batch(noise, trueCol)
+        if doGenTrain:
+            noise = np.random.normal(0, 1, (batchSize, NOISE_SIZE))
+            genLoss = gan.train_on_batch(noise, trueCol)
 
         # Plot data
         genLossData.append(genLoss)
-        advLossData.append(advLoss[0])
+        advLossData.append(advLossTemp)
 
         print(".", end=" ")
         if epoch % 50 == 0:
@@ -228,8 +247,8 @@ def buildGAN(images, epochs=40000, batchSize=32, loggingInterval=0):
         # Logging
         if loggingInterval > 0 and epoch % loggingInterval == 0:
             print("\tEpoch %d:" % epoch)
-            print("\t\tDiscriminator loss: %f." % advLoss[0])
-            print("\t\tDiscriminator accuracy: %.2f%%." % (100 * advLoss[1]))
+            print("\t\tDiscriminator loss: %f." % advLossTemp)
+            print("\t\tDiscriminator accuracy: %.2f%%." % (100 * advAccTemp))
             print("\t\tGenerator loss: %f." % genLoss)
             runGAN(generator, OUTPUT_DIR + "/" + OUTPUT_NAME +
                    "_test_%d.png" % (epoch / loggingInterval))
@@ -252,7 +271,7 @@ def runGAN(generator, outfile):
     im = Image.fromarray(img)                       # store resulting image
     im = im.convert("RGB")
     im.save(outfile)
-    display(im)
+    # display(im)
 
 
 ################################### RUNNING THE PIPELINE #############################
